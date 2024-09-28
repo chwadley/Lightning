@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.lang.Float;
-import java.lang.Integer;
 float x=width/2;
 float y=5;
 float nX;
@@ -11,16 +8,62 @@ int l=0;
 double d=10000;
 float bg=0;
 float wobbliness=2;
-ArrayList<Integer> xs=new ArrayList<Integer>();
-ArrayList<Integer> ys=new ArrayList<Integer>();
+float[] xs={};
+float[] ys={};
 int sw3;
 int timer=0;
 boolean incTimer=false;
-ArrayList<Integer> particlesX=new ArrayList<Integer>();
-ArrayList<Integer> particlesY=new ArrayList<Integer>();
-ArrayList<Integer> particlesDX=new ArrayList<Integer>();
-ArrayList<Integer> particlesDY=new ArrayList<Integer>();
-ArrayList<Integer> particlesIntensity=new ArrayList<Integer>();
+float[] particlesX={};
+float[] particlesY={};
+float[] particlesDX={};
+float[] particlesDY={};
+//float[] newList;
+//int[] newListInt;
+int[] particlesIntensity={};
+
+float[] add(float[] list,float a) {
+  int n=list.length+1;
+  float newList[] = new float[n];
+  for (int i=0;i<list.length;i++) {
+    newList[i]=list[i];
+  }
+  newList[list.length]=a;
+  return newList;
+}
+
+float[] remove(float[] list,int idx) {
+  int n=list.length-1;
+  float newList[]=new float[n];
+  for (int i=0;i<idx;i++) {
+    newList[i]=list[i];
+  }
+  for (int i=idx+1;i<list.length-1;i++) {
+    newList[i]=list[i];
+  }
+  return newList;
+}
+
+int[] addInt(int[] list,int a) {
+  int n=list.length+1;
+  int newListInt[]=new int[n];
+  for (int i=0;i<list.length;i++) {
+    newListInt[i]=list[i];
+  }
+  newListInt[list.length]=a;
+  return newListInt;
+}
+
+int[] removeInt(int[] list,int idx) {
+  int n=list.length-1;
+  int newListInt[]=new int[n];
+  for (int i=0;i<idx;i++) {
+    newListInt[i]=list[i];
+  }
+  for (int i=idx+1;i<list.length-1;i++) {
+    newListInt[i]=list[i];
+  }
+  return newListInt;
+}
 
 void setup() {
   size(400, 400);
@@ -39,10 +82,10 @@ void unit(boolean recalculate) {
     nY=y;
     l=0;
     d=10000;
-    xs.clear();
-    ys.clear();
-    xs.add((int)x);
-    ys.add((int)y);
+    xs=new float[0];
+    ys=new float[0];
+    xs=add(xs,x);
+    ys=add(ys,y);
    
     while (l<2000&&d>2) {
       float m=10;
@@ -54,8 +97,8 @@ void unit(boolean recalculate) {
       d=Math.sqrt((sq(nY-targetY)+sq(nX-targetX)))/wobbliness;
       nX=lerp(nX,targetX,(float)(1/(d+1)));
       nY=lerp(nY,targetY,(float)(1/(d+1)));
-      xs.add((int)nX);
-      ys.add((int)nY);
+      xs=add(xs,nX);
+      ys=add(ys,nY);
       //gradientLine(x, y, nX, nY);
       x=nX;
       y=nY;
@@ -79,7 +122,7 @@ void unit(boolean recalculate) {
       lerp(center[2],outside[2],t));
       //System.out.println(middle);
       stroke(middle);
-      line(xs.get(i),ys.get(i),xs.get(i+1),ys.get(i+1));
+      line(xs[i],ys[i],xs[i+1],ys[i+1]);
     }
   }
   
@@ -94,31 +137,31 @@ void draw() {
   background(lerp(-255,255,bg/255.0),lerp(-595,255,bg/255.0),lerp(0,255,bg/255.0));
   if (mousePressed) {
     sw3=400;
-    particlesX.add((int)mouseX);
-    particlesY.add((int)mouseY);
-    particlesDX.add((int)((Math.random()-0.5)*10));
-    particlesDY.add((int)((Math.random()-0.5)*3));
-    particlesIntensity.add(255);
+    particlesX=add(particlesX,(float)mouseX);
+    particlesY=add(particlesY,(float)mouseY);
+    particlesDX=add(particlesDX,(float)(Math.random()-0.5)*10);
+    particlesDY=add(particlesDY,(float)(Math.random()-0.5)*2);
+    particlesIntensity=addInt(particlesIntensity,255);
     //fill(0);
     //noStroke();
     //circle(50,50,50);
   }
-  for (int i=0;i<particlesX.size();i++) {
-    particlesX.set(i,particlesX.get(i)+particlesDX.get(i));
-    particlesY.set(i,particlesY.get(i)+particlesDY.get(i));
-    float __x=particlesX.get(i);
-    float __y=particlesY.get(i);
-    particlesIntensity.set(i,particlesIntensity.get(i)-3);
-    if (__x>width||__x<0||__y>height||__y<0||particlesIntensity.get(i)<3) {
-      particlesX.remove(i);
-      particlesY.remove(i);
-      particlesDX.remove(i);
-      particlesDY.remove(i);
-      particlesIntensity.remove(i);
+  for (int i=0;i<particlesX.length;i++) {
+    particlesX[i]=particlesX[i]+particlesDX[i];
+    particlesY[i]=particlesY[i]+particlesDY[i];
+    float __x=particlesX[i];
+    float __y=particlesY[i];
+    particlesIntensity[i]=particlesIntensity[i]-3;
+    if (__x>width||__x<0||__y>height||__y<0||particlesIntensity[i]<3) {
+      particlesX=remove(particlesX,i);
+      particlesY=remove(particlesY,i);
+      particlesDX=remove(particlesDX,i);
+      particlesDY=remove(particlesDY,i);
+      particlesIntensity=removeInt(particlesIntensity,i);
       continue;
     }
-    fill(255,255,255,particlesIntensity.get(i)); //cleared before end o frame
-    circle(particlesX.get(i),particlesY.get(i),10);
+    fill(255,255,255,particlesIntensity[i]); //cleared before end o frame
+    circle(particlesX[i],particlesY[i],10);
   }
   if (sw3>-400) {
     sw3-=20;
