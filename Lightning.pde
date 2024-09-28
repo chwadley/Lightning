@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.lang.Float;
+import java.lang.Integer;
 float x=width/2;
 float y=5;
 float nX;
