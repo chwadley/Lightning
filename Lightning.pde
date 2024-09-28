@@ -129,8 +129,8 @@ void unit(boolean recalculate) {
   //System.out.println("test");
   fill(255);
   noStroke();
-  text(Float.toString(wobbliness),50,50);
-  text(Integer.toString(sw3),75,50);
+  //text(Float.toString(wobbliness),50,50);
+  //text(Integer.toString(sw3),75,50);
 }
 
 void draw() {
@@ -161,7 +161,7 @@ void draw() {
       continue;
     }
     fill(255,255,255,particlesIntensity[i]); //cleared before end o frame
-    circle(particlesX[i],particlesY[i],10);
+    ellipse(particlesX[i],particlesY[i],10,10);
   }
   if (sw3>-400) {
     sw3-=20;
