@@ -11,15 +11,15 @@ int l=0;
 double d=10000;
 float bg=0;
 float wobbliness=2;
-ArrayList<Float> xs=new ArrayList<Float>();
-ArrayList<Float> ys=new ArrayList<Float>();
+ArrayList<Integer> xs=new ArrayList<Integer>();
+ArrayList<Integer> ys=new ArrayList<Integer>();
 int sw3;
 int timer=0;
 boolean incTimer=false;
-ArrayList<Float> particlesX=new ArrayList<Float>();
-ArrayList<Float> particlesY=new ArrayList<Float>();
-ArrayList<Float> particlesDX=new ArrayList<Float>();
-ArrayList<Float> particlesDY=new ArrayList<Float>();
+ArrayList<Integer> particlesX=new ArrayList<Integer>();
+ArrayList<Integer> particlesY=new ArrayList<Integer>();
+ArrayList<Integer> particlesDX=new ArrayList<Integer>();
+ArrayList<Integer> particlesDY=new ArrayList<Integer>();
 ArrayList<Integer> particlesIntensity=new ArrayList<Integer>();
 
 void setup() {
@@ -41,8 +41,8 @@ void unit(boolean recalculate) {
     d=10000;
     xs.clear();
     ys.clear();
-    xs.add(x);
-    ys.add(y);
+    xs.add((int)x);
+    ys.add((int)y);
    
     while (l<2000&&d>2) {
       float m=10;
@@ -54,8 +54,8 @@ void unit(boolean recalculate) {
       d=Math.sqrt((sq(nY-targetY)+sq(nX-targetX)))/wobbliness;
       nX=lerp(nX,targetX,(float)(1/(d+1)));
       nY=lerp(nY,targetY,(float)(1/(d+1)));
-      xs.add(nX);
-      ys.add(nY);
+      xs.add((int)nX);
+      ys.add((int)nY);
       //gradientLine(x, y, nX, nY);
       x=nX;
       y=nY;
@@ -94,10 +94,10 @@ void draw() {
   background(lerp(-255,255,bg/255.0),lerp(-595,255,bg/255.0),lerp(0,255,bg/255.0));
   if (mousePressed) {
     sw3=400;
-    particlesX.add((float)mouseX);
-    particlesY.add((float)mouseY);
-    particlesDX.add((float)(Math.random()-0.5)*10);
-    particlesDY.add((float)(Math.random()-0.5)*2);
+    particlesX.add((int)mouseX);
+    particlesY.add((int)mouseY);
+    particlesDX.add((int)((Math.random()-0.5)*10));
+    particlesDY.add((int)((Math.random()-0.5)*3));
     particlesIntensity.add(255);
     //fill(0);
     //noStroke();
